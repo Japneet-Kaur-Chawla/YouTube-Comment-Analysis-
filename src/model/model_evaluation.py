@@ -14,7 +14,9 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import json
 from mlflow.models import infer_signature
-import dagshub
+from utils.mlflow_setup import init_mlflow
+
+init_mlflow()
 
 # logging configuration
 logger = logging.getLogger('model_evaluation')
@@ -130,11 +132,6 @@ def save_model_info(run_id: str, model_path: str, file_path: str) -> None:
 
 
 def main():
-    dagshub.init(
-        repo_owner='Japneet-Kaur-Chawla',
-        repo_name='youtube-comment-analysis-repository',
-        mlflow=True
-    )
     with mlflow.start_run() as run:
         try:
             # Load parameters from YAML file
@@ -142,8 +139,10 @@ def main():
             params = load_params(os.path.join(root_dir, 'params.yaml'))
 
             # Log parameters
-            for key, value in params.items():
-                mlflow.log_param(key, value)
+            for section, section_vals in params.items():
+                if isinstance(section_vals, dict):
+                    for k, v in section_vals.items():
+                        mlflow.log_param(f"{section}_{k}", v)
             
             # Load model and vectorizer
             model = load_model(os.path.join(root_dir, 'lgbm_model.pkl'))
@@ -157,7 +156,7 @@ def main():
             y_test = test_data['category'].values
 
             # Create a DataFrame for signature inference (using first few rows as an example)
-            input_example = pd.DataFrame(X_test_tfidf.toarray()[:5], columns=vectorizer.get_feature_names_out())  # <--- Added for signature
+            input_example = X_test_tfidf[:5].toarray() # <--- Added for signature
 
             # Infer the signature
             signature = infer_signature(input_example, model.predict(X_test_tfidf[:5]))  # <--- Added for signature

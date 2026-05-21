@@ -1,0 +1,10 @@
+artifact_location: /Users/japneetkaurchawla/Downloads/YouTube Comment Analysis/dagshub/917732618626622397/models/m-6731a59d1eaf454dbee148501ac1764f/artifacts
+creation_timestamp: 1779388011141
+experiment_id: '917732618626622397'
+last_updated_timestamp: 1779388013641
+model_id: m-6731a59d1eaf454dbee148501ac1764f
+model_type: null
+name: lgbm_model
+source_run_id: 1622a14fd39c4f46a66d974c6add6507
+status: 2
+status_message: null
