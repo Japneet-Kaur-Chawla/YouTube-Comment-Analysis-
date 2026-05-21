@@ -14,8 +14,12 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import json
 from mlflow.models import infer_signature
-from utils.mlflow_setup import init_mlflow
+import sys
+import os
 
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
+
+from src.utils.mlflow_setup import init_mlflow
 init_mlflow()
 
 # logging configuration
